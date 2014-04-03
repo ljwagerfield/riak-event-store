@@ -8,9 +8,10 @@ An event log implemented on Riak as a tree of size-bounded sequences, referred t
 Log shards
 ----------
 
-An event log is represented as multiple KVPs within Riak. Each of these entries is referred to as a 'log shard': a
-size-bounded object that overflows into a new shard when it reaches its maximum size (1000 items). When this occurs, the
-full shard retains a reference to the new shard, allowing the complete sequence of events to be traversed as a linked-list.
+This library represents each event log as multiple KVPs within Riak. Each of these entries is referred to as a 
+'log shard': a size-bounded object that overflows into a new shard when it reaches its maximum size (1000 items). 
+When this occurs, the full shard retains a reference to the new shard, allowing the complete sequence of events to 
+be traversed as a linked-list.
 
 Log shards are classified as either `head` or `tail` shards. An event log has one `head` shard and zero-to-many `tail`
 shards. The `head` shard key is a hash of the log name (e.g. `f('my log') = 0x8fb9...`), whereas the `tail` shard keys
@@ -49,7 +50,7 @@ Conflict detection is provided through Riak by persisting `head` shards to bucke
 (`allow_mult=true`). Conversely, `tail` shards are committed to buckets with this feature optimally disabled.
 
 Riak will automatically raise conflicts without reevaluating merge results against their inputs. This removes the
-need to implement shards as complete CvRDTs, but still requires payloads to support partial re-merging to allow
+need to implement shards as complete [CvRDTs][crdt], but still requires payloads to support partial re-merging to allow
 concurrent writes post-merge.
 
 The event store achieves this by implementing GUID lists as sorted sets, making appends idempotent.
@@ -58,3 +59,5 @@ The event store achieves this by implementing GUID lists as sorted sets, making 
 
 Due to their size-bounded design, shards will adsorb duplicate events during re-merges with shards that contain
 previously-truncated events. This must be considered when replaying the event log.
+
+[crdt]: https://github.com/ljwagerfield/crdt  "Conflict-free Replicated Data Types"
