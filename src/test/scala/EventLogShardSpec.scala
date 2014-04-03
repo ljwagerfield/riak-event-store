@@ -2,7 +2,7 @@ import org.specs2.mutable.Specification
 import org.specs2.specification.Scope
 
 /**
- * Specifies the behaviour of an event log shard.
+ * Event log shard specification.
  */
 class EventLogShardSpec extends Specification {
 
