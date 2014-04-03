@@ -14,7 +14,7 @@ full shard retains a reference to the new shard, allowing the complete sequence 
 
 Log shards are classified as either `head` or `tail` shards. An event log has one `head` shard and zero-to-many `tail`
 shards. The `head` shard key is a hash of the log name (e.g. `f('my log') = 0x8fb9...`), whereas the `tail` shard keys
-match the hash defined in their payload. This provides a fixed address for the `head` and deterministic non-conflicting
+match the hash defined in their payloads. This provides a fixed address for the `head` and deterministic non-conflicting
 addresses for `tail` shards.
 
 Payload
@@ -32,11 +32,11 @@ A log shard has the following size-bounded structure:
 
 Log shard hashes are a function of all event IDs and child shard hashes.
 
-Child shard hashes reference zero-to-many child shards within the graph. Multiple children are a result of merging
+Child shard hashes reference zero-to-many child shards within the tree. Multiple children are a result of merging
 multiple conflicting `head` shards (discussed later). Systems that do not experience concurrent writes will simply
 produce a linked-list (i.e. shards will have up to one child).
 
-Event IDs represent the 'useful payload': the sequence of events we are maintaining causal ordering for.
+Event IDs represent the 'useful payload': the sequence of events we are maintaining causal order for.
 
 Conflicts
 ---------
