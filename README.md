@@ -8,9 +8,10 @@ An event log implemented on Riak as a tree of size-bounded sequences, referred t
 Log shards
 ----------
 
-An event log is represented as multiple KVPs within Riak. Each of these entries is referred to as a 'log shard': a
-size-bounded object that overflows into a new shard when it reaches its maximum size (1000 items). When this occurs, the
-full shard retains a reference to the new shard, allowing the complete sequence of events to be traversed as a linked-list.
+This library represents each event log as multiple KVPs within Riak. Each of these entries is referred to as a 
+'log shard': a size-bounded object that overflows into a new shard when it reaches its maximum size (1000 items). 
+When this occurs, the full shard retains a reference to the new shard, allowing the complete sequence of events to 
+be traversed as a linked-list.
 
 Log shards are classified as either `head` or `tail` shards. An event log has one `head` shard and zero-to-many `tail`
 shards. The `head` shard key is a hash of the log name (e.g. `f('my log') = 0x8fb9...`), whereas the `tail` shard keys
