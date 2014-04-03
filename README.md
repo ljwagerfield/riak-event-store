@@ -50,7 +50,7 @@ Conflict detection is provided through Riak by persisting `head` shards to bucke
 (`allow_mult=true`). Conversely, `tail` shards are committed to buckets with this feature optimally disabled.
 
 Riak will automatically raise conflicts without reevaluating merge results against their inputs. This removes the
-need to implement shards as complete CvRDTs, but still requires payloads to support partial re-merging to allow
+need to implement shards as complete [CvRDTs][crdt], but still requires payloads to support partial re-merging to allow
 concurrent writes post-merge.
 
 The event store achieves this by implementing GUID lists as sorted sets, making appends idempotent.
@@ -59,3 +59,5 @@ The event store achieves this by implementing GUID lists as sorted sets, making 
 
 Due to their size-bounded design, shards will adsorb duplicate events during re-merges with shards that contain
 previously-truncated events. This must be considered when replaying the event log.
+
+[crdt]: https://github.com/ljwagerfield/crdt  "Conflict-free Replicated Data Types"
