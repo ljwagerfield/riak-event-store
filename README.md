@@ -27,7 +27,9 @@ Guarantees and trade-offs
 
 -   Guarantee 1: The earliest occurrence of an event within the log is guaranteed to be in correct causal order.
 
--   Guarantee 2: Values are size-bounded.
+-   Guarantee 2: All values are size-bounded.
+
+-   Guarantee 3: All `tail` values have a fixed size; these represent the vast majority.
 
 -   Trade-off: Event duplicates may occur. Later events must be ignored when replaying the log; only the earliest event has
 the correct order guarantee.
