@@ -55,7 +55,9 @@ A log shard has the following size-bounded structure:
 -   `child` is a *set* of references to shards containing previously observed state.
 
 The `event` and `child` hashes occupy a shared quota, where `event`s are allocated before `child`s, with the exception
-of at least one child to provide continuity.
+of at least one child to provide continuity. 
+
+Children imply state that precedes the current shard, although children do not imply causality between themselves: they are siblings and represent event branches. Prioritising the allocation of events before referencing existing children retains the intention from each shard; the event payload succeeds those from its children.
 
 ### Payload size
 
@@ -70,7 +72,7 @@ process is as follows:
 
 1.  `unfold` the linked-list into a partially sorted set:
 
-        a > b  = a.child ⊇ b.hash
+        a > b = a.child ⊇ b.hash
 
 2.  `sort` unsorted items by `hash` to ensure deterministic ordering of siblings.
 
