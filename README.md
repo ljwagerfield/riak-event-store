@@ -57,7 +57,7 @@ A log shard has the following size-bounded structure:
 The `event` and `child` hashes occupy a shared quota, where `event`s are allocated before `child`s, with the exception
 of at least one child to provide continuity. 
 
-Children imply state that precedes the current shard, although children do not imply causality between themselves: they are siblings and represent event branches. Prioritising the allocation of events before referencing existing children retains the intention from each shard; the event payload succeeds those from its children.
+Children imply state that precedes the current shard, although children do not imply causality between themselves: they are siblings and represent event branches. Prioritising the allocation of events before referencing existing children retains the intention from each shard; events from the current payload succeeds those from its children.
 
 ### Payload size
 
