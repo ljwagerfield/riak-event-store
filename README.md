@@ -50,7 +50,7 @@ A log shard has the following size-bounded structure:
 
 -   `hash` is a function of the entire payload.
 
--   `event` is a sequence of unique event references in ascending causal order (earliest first).
+-   `event` is a sequence of unique event references in ascending causal order (earliest first, events are appended).
 
 -   `child` is a *set* of references to shards containing previously observed state.
 
