@@ -25,11 +25,11 @@ addresses for `tail` shards.
 Guarantees and trade-offs
 -------------------------
 
-Guarantee 1: The earliest occurrence of an event within the log is guaranteed to be in correct causal order.
+-   Guarantee 1: The earliest occurrence of an event within the log is guaranteed to be in correct causal order.
 
-Guarantee 2: Values are size-bounded.
+-   Guarantee 2: Values are size-bounded.
 
-Trade-off: Event duplicates may occur. Later events must be ignored when replaying the log; only the earliest event has
+-   Trade-off: Event duplicates may occur. Later events must be ignored when replaying the log; only the earliest event has
 the correct order guarantee.
 
 Payload
