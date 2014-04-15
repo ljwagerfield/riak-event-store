@@ -30,4 +30,11 @@ class Sha1HashSpec extends Specification {
       Sha1Hash(value) must throwA[Exception]
     }
   }
+
+  "SHA-1 hashes" should {
+
+    "be comparable" in {
+      failure
+    }
+  }
 }

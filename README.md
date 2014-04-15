@@ -43,21 +43,23 @@ A log shard has the following size-bounded structure:
     -----------------------------------
     Hash  | SHA-1 | 1
     ------|-------|--------------------
-    Event | SHA-1 | 1 to 1000 - |Child|
+    Event | SHA-1 | 0 to 1000 - |Child|
     ------|-------|--------------------
-    Child | SHA-1 | 1 to 1000 - |Event|
+    Child | SHA-1 | 0 to 1000 - |Event|
     -----------------------------------
 
 -   `hash` is a function of the entire payload.
 
--   `event` is a sequence of unique event references in ascending causal order (earliest first, events are appended).
+-   `event` is a sequence of unique event references in descending causal order (latest first, events are prepended).
 
 -   `child` is a *set* of references to shards containing previously observed state.
 
 The `event` and `child` hashes occupy a shared quota, where `event`s are allocated before `child`s, with the exception
 of at least one child to provide continuity. 
 
-Children imply state that precedes the current shard, although children do not imply causality between themselves: they are siblings and represent event branches. Prioritising the allocation of events before referencing existing children retains the intention from each shard; events from the current payload succeeds those from its children.
+Children imply state that precedes the current shard, although children do not imply causality between themselves: they
+are siblings and represent event branches. Prioritising the allocation of events before referencing existing children
+retains the intention from each shard; events from the current payload succeeds those from its children.
 
 ### Payload size
 
@@ -72,13 +74,15 @@ process is as follows:
 
 1.  `unfold` the linked-list into a partially sorted set:
 
-        a > b = a.child ⊇ b.hash
+        a < b = a.child ⊇ b.hash
 
 2.  `sort` unsorted items by `hash` to ensure deterministic ordering of siblings.
 
-3.  `flatmap` over each `event` sub-sequence to produce a sequence of events, with duplicates, in ascending causal order.
+3.  `flatmap` over each `event` sub-sequence to produce a sequence of events, with duplicates, in descending causal order.
 
-4.  `filter` the resulting sequence, keeping only the first occurrence of each element.
+4.  `filter` the resulting sequence, keeping only the last occurrence of each element.
+
+*Note: this produces a sequence in descending causal order.*
 
 Conflicts
 ---------
