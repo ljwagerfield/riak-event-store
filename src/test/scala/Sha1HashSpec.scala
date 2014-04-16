@@ -34,7 +34,16 @@ class Sha1HashSpec extends Specification {
   "SHA-1 hashes" should {
 
     "be comparable" in {
-      failure
+      val lowestA = Sha1Hash(List.fill(20)(0.toByte))
+      val lowestB = Sha1Hash(List.fill(20)(0.toByte))
+      val greatest = Sha1Hash(List.fill(20)(9.toByte))
+
+      lowestA mustEqual lowestB
+      lowestA mustNotEqual greatest
+
+      Sha1Hash.Ordering.compare(lowestA, lowestB) must beEqualTo(0)
+      Sha1Hash.Ordering.compare(lowestA, greatest) must beLessThan(0)
+      Sha1Hash.Ordering.compare(greatest, lowestA) must beGreaterThan(0)
     }
   }
 }
